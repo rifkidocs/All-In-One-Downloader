@@ -7,7 +7,7 @@ export default function Home() {
   const textVariants: string[] = ["TikTok", "Downloader"];
 
   return (
-    <main className='xl:px-56 lg:px-10 px-4 min-h-[90vh] flex justify-center items-center'>
+    <main className='xl:px-56 lg:px-10 px-4 min-h-screen flex justify-center items-center'>
       <div className='flex w-full justify-around sm:flex-row flex-col items-center gap-y-5'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -25,16 +25,22 @@ export default function Home() {
               <p className='font-bold text-5xl mb-3'>{text}</p>
             </motion.div>
           ))}
-          <Input
-            className='mb-3'
-            type='text'
-            label='Paste the TikTok Video Link !'
-          />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 2 * 0.2 }}>
+            <Input
+              className='mb-3'
+              type='text'
+              label='Paste the TikTok Video Link !'
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 3 * 0.2 }}>
             <Button
               variant='shadow'
               className='bg-gradient-to-tr from-blue-500 to-blue-400 text-white shadow-lg sm:w-fit w-full'>

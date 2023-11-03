@@ -5,6 +5,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Navbar } from "@nextui-org/react";
 import NavigationBar from "./components/NavigationBar";
+import Footer from "./components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
         <Providers>
           <NavigationBar />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>

@@ -10,6 +10,9 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from "@nextui-org/react";
 
 const NavigationBar = () => {
@@ -46,9 +49,32 @@ const NavigationBar = () => {
 
       <NavbarContent justify='end'>
         <NavbarItem>
-          <Button as={Link} color='primary' href='#' variant='flat'>
-            Contact
-          </Button>
+          <Popover placement='bottom' showArrow={true}>
+            <PopoverTrigger>
+              <Button as={Link} color='primary' href='#' variant='flat'>
+                Contact
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <div className='px-1 py-2'>
+                <div className='text-small font-bold'>Social Media</div>
+                <div>
+                  <Link
+                    href='https://instagram.com/rifkithears'
+                    className='text-small'>
+                    Instagram
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href='https://github.com/rifkidocs'
+                    className='text-small'>
+                    Github
+                  </Link>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
