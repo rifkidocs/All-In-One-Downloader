@@ -69,7 +69,7 @@ export default function Home() {
   );
 
   const handleDownload = async () => {
-    if (platformValue === "TikTok") {
+    if (platformValue === "TikTok" && inputValue) {
       try {
         setDownloading(true);
         const response = await axios.get(
@@ -82,7 +82,7 @@ export default function Home() {
         setDownloading(false);
       }
     }
-    if (platformValue === "Youtube") {
+    if (platformValue === "Youtube" && inputValue) {
       try {
         setDownloading(true);
         const response = await axios.get(
@@ -106,10 +106,6 @@ export default function Home() {
       }
     }
   };
-
-  useEffect(() => {
-    console.log(platformValue);
-  }, [platformValue]);
 
   const handleSelectionChange = (e: any) => {
     setPlatformValue(e.target.value);
@@ -231,7 +227,7 @@ export default function Home() {
                   <a href={resultTiktok.video.watermark}> MP4 WITH WATERMARK</a>
                 </Button>
                 <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
-                  <a href={resultTiktok.music.play_url}> MP4A MUSIC ONLY</a>
+                  <a href={resultTiktok.music.play_url}> MP MUSIC ONLY</a>
                 </Button>
               </CardBody>
               <Divider />
