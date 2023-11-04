@@ -12,6 +12,8 @@ import {
   Divider,
   Link,
   Image,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
 import axios from "axios";
 
@@ -29,34 +31,92 @@ export default function Home() {
     music: {
       play_url: string;
     };
-    // Definisikan properti lain yang ada dalam objek result
   }
 
-  const textVariants: string[] = ["TikTok", "Downloader"];
+  interface YoutubeResult {
+    title: string;
+    video_high: string;
+    video_low: string;
+    thumbnail_url: string;
+    author: string;
+    audio_high: string;
+  }
+
+  interface Value {
+    value: string;
+  }
+
+  interface Platform {
+    value: string;
+  }
+
+  const platforms: Platform[] = [
+    {
+      value: "TikTok",
+    },
+    {
+      value: "Youtube",
+    },
+  ];
+
+  const textVariants: string[] = ["TikTok & Youtube", "Downloader"];
   const [inputValue, setInputValue] = useState("");
+  const [platformValue, setPlatformValue] = useState("TikTok");
   const [downloading, setDownloading] = useState(false);
-  const [result, setResult] = useState<TikTokResult | null>(null);
+  const [resultTiktok, setResultTiktok] = useState<TikTokResult | null>(null);
+  const [resultYoutube, setResultYoutube] = useState<YoutubeResult | null>(
+    null
+  );
 
   const handleDownload = async () => {
-    try {
-      setDownloading(true);
-      const response = await axios.get(
-        `https://api.tiklydown.eu.org/api/download?url=${inputValue}`
-      );
-      setResult(response.data);
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setDownloading(false);
+    if (platformValue === "TikTok") {
+      try {
+        setDownloading(true);
+        const response = await axios.get(
+          `https://api.tiklydown.eu.org/api/download?url=${inputValue}`
+        );
+        setResultTiktok(response.data);
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setDownloading(false);
+      }
+    }
+    if (platformValue === "Youtube") {
+      try {
+        setDownloading(true);
+        const response = await axios.get(
+          "https://youtube-audio-video-download.p.rapidapi.com/geturl",
+          {
+            params: {
+              video_url: inputValue,
+            },
+            headers: {
+              "X-RapidAPI-Key":
+                "1bceb64ea5mshaf26c4cd537940cp131616jsnf5e2ba80ce9f",
+              "X-RapidAPI-Host": "youtube-audio-video-download.p.rapidapi.com",
+            },
+          }
+        );
+        setResultYoutube(response.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setDownloading(false);
+      }
     }
   };
 
   useEffect(() => {
-    console.log(result);
-  }, [result]);
+    console.log(platformValue);
+  }, [platformValue]);
+
+  const handleSelectionChange = (e: any) => {
+    setPlatformValue(e.target.value);
+  };
 
   return (
-    <main className='xl:px-96 lg:px-44 px-4 py-4 min-h-screen flex justify-center items-center'>
+    <main className='xl:px-96 lg:px-46 px-4 py-4 min-h-screen flex justify-center items-center'>
       <div className='w-full'>
         <div className='flex w-full justify-around sm:flex-row flex-col items-center gap-y-5'>
           <motion.div
@@ -66,9 +126,17 @@ export default function Home() {
             <Image
               className='hover:scale-110 duration-300'
               src='/tiktok.svg'
-              width={200}
-              height={200}
+              width={150}
+              height={150}
               alt='Logo Tiktok'
+            />
+
+            <Image
+              className='hover:scale-110 duration-300'
+              src='/youtube.svg'
+              width={150}
+              height={150}
+              alt='Logo Youtube'
             />
           </motion.div>
           <div>
@@ -87,19 +155,40 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 2 * 0.2 }}>
-              <Input
-                className='mb-3'
-                type='text'
-                label='Paste the TikTok Video Link !'
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-              />
+              <Select
+                label='Select a platform'
+                selectedKeys={[platformValue]}
+                onChange={handleSelectionChange}
+                className='max-w-md mb-3'>
+                {platforms.map((platform) => (
+                  <SelectItem key={platform.value} value={platform.value}>
+                    {platform.value}
+                  </SelectItem>
+                ))}
+              </Select>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 3 * 0.2 }}>
+              <Input
+                className='mb-3'
+                type='text'
+                label={`Paste the ${platformValue} Video Link !`}
+                value={inputValue}
+                onChange={(e) => {
+                  setInputValue(e.target.value);
+                  setResultTiktok(null);
+                  setResultYoutube(null);
+                }}
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 4 * 0.2 }}>
               <Button
                 variant='shadow'
                 className={`bg-gradient-to-tr from-blue-500 to-blue-400 text-white shadow-lg sm:w-fit w-full ${
@@ -112,7 +201,7 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
-        {result && (
+        {resultTiktok && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -123,30 +212,74 @@ export default function Home() {
                   alt='thumbnail user'
                   height={100}
                   radius='sm'
-                  src={result.author.avatar}
+                  src={resultTiktok.author.avatar}
                   width={100}
                 />
                 <div className='flex flex-col'>
-                  <p className='text-md'>{result.author.name}</p>
-                  <p className='text-small text-default-500'>{result.title}</p>
+                  <p className='text-md'>{resultTiktok.author.name}</p>
+                  <p className='text-small text-default-500'>
+                    {resultTiktok.title}
+                  </p>
                 </div>
               </CardHeader>
               <Divider />
               <CardBody className='gap-y-3'>
                 <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
-                  <a href={result.video.noWatermark}>MP4 NO WATERMARK</a>
+                  <a href={resultTiktok.video.noWatermark}>MP4 NO WATERMARK</a>
                 </Button>
                 <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
-                  <a href={result.video.watermark}> MP4 WITH WATERMARK</a>
+                  <a href={resultTiktok.video.watermark}> MP4 WITH WATERMARK</a>
                 </Button>
                 <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
-                  <a href={result.music.play_url}> MP3 MUSIC ONLY</a>
+                  <a href={resultTiktok.music.play_url}> MP3 MUSIC ONLY</a>
                 </Button>
               </CardBody>
               <Divider />
               <CardFooter>
                 <Link isExternal showAnchorIcon href={inputValue}>
                   Visit source video on tiktok.
+                </Link>
+              </CardFooter>
+            </Card>
+          </motion.div>
+        )}
+        {resultYoutube && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}>
+            <Card className='max-w-[400px] mx-auto mt-10'>
+              <CardHeader className='flex gap-3'>
+                <Image
+                  alt='thumbnail user'
+                  height={100}
+                  radius='sm'
+                  src={resultYoutube.thumbnail_url}
+                  width={100}
+                />
+                <div className='flex flex-col'>
+                  <p className='text-md'>{resultYoutube.author}</p>
+                  <p className='text-small text-default-500'>
+                    {resultYoutube.title}
+                  </p>
+                </div>
+              </CardHeader>
+              <Divider />
+              <CardBody className='gap-y-3'>
+                <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
+                  <a href={resultYoutube.video_high}>MP4 HIGH RESOLUTION</a>
+                </Button>
+                <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
+                  <a href={resultYoutube.video_low}>MP4 LOW RESOLUTION</a>
+                </Button>
+                <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
+                  <a href={resultYoutube.audio_high}> MP3 MUSIC ONLY</a>
+                </Button>
+              </CardBody>
+              <Divider />
+              <CardFooter>
+                <Link isExternal showAnchorIcon href={inputValue}>
+                  Visit source video on youtube.
                 </Link>
               </CardFooter>
             </Card>
