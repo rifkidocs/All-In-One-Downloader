@@ -22,7 +22,7 @@ const NavigationBar = () => {
 
   return (
     <Navbar
-      classNames={{ wrapper: "max-w-full xl:px-56 lg:px-10 px-4" }}
+      classNames={{ wrapper: "max-w-full xl:px-96 lg:px-44 px-4" }}
       onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
         <NavbarMenuToggle

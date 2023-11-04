@@ -7,7 +7,7 @@ export default function Home() {
   const textVariants: string[] = ["TikTok", "Downloader"];
 
   return (
-    <main className='xl:px-56 lg:px-10 px-4 min-h-screen flex justify-center items-center'>
+    <main className='xl:px-96 lg:px-44 px-4 min-h-screen flex justify-center items-center'>
       <div className='flex w-full justify-around sm:flex-row flex-col items-center gap-y-5'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
