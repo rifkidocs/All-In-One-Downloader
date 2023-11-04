@@ -51,7 +51,7 @@ const NavigationBar = () => {
         <NavbarItem>
           <Popover placement='bottom' showArrow={true}>
             <PopoverTrigger>
-              <Button as={Link} color='primary' href='#' variant='flat'>
+              <Button color='primary' variant='flat'>
                 Contact
               </Button>
             </PopoverTrigger>
