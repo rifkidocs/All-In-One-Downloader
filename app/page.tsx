@@ -227,7 +227,7 @@ export default function Home() {
                   <a href={resultTiktok.video.watermark}> MP4 WITH WATERMARK</a>
                 </Button>
                 <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
-                  <a href={resultTiktok.music.play_url}> MP MUSIC ONLY</a>
+                  <a href={resultTiktok.music.play_url}> MP3 MUSIC ONLY</a>
                 </Button>
               </CardBody>
               <Divider />
@@ -269,7 +269,7 @@ export default function Home() {
                   <a href={resultYoutube.video_low}>MP4 LOW RESOLUTION</a>
                 </Button>
                 <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
-                  <a href={resultYoutube.audio_high}> MP3 MUSIC ONLY</a>
+                  <a href={resultYoutube.audio_high}> MP4A MUSIC ONLY</a>
                 </Button>
               </CardBody>
               <Divider />
