@@ -19,18 +19,21 @@ import axios from "axios";
 
 export default function Home() {
   interface TikTokResult {
-    title: string;
-    author: {
-      name: string;
-      avatar: string;
+    aweme_detail: {
+      desc: string;
+      author: {
+        nickname: string;
+        avatar_larger: {
+          url_list: string[];
+        };
+      };
+      music: {
+        play_url: {
+          uri: string;
+        };
+      };
     };
-    video: {
-      noWatermark: string;
-      watermark: string;
-    };
-    music: {
-      play_url: string;
-    };
+    hdplay: string;
   }
 
   interface YoutubeResult {
@@ -59,7 +62,7 @@ export default function Home() {
     },
   ];
 
-  const textVariants: string[] = ["TikTok & Youtube", "Downloader"];
+  const textVariants: string[] = ["All In One", "Downloader"];
   const [inputValue, setInputValue] = useState("");
   const [platformValue, setPlatformValue] = useState("TikTok");
   const [downloading, setDownloading] = useState(false);
@@ -73,7 +76,18 @@ export default function Home() {
       try {
         setDownloading(true);
         const response = await axios.get(
-          `https://api.tiklydown.eu.org/api/download?url=${inputValue}`
+          "https://tiktok-full-video-info-without-watermark.p.rapidapi.com/",
+          {
+            params: {
+              url: inputValue,
+            },
+            headers: {
+              "X-RapidAPI-Key":
+                "1bceb64ea5mshaf26c4cd537940cp131616jsnf5e2ba80ce9f",
+              "X-RapidAPI-Host":
+                "tiktok-full-video-info-without-watermark.p.rapidapi.com",
+            },
+          }
         );
         setResultTiktok(response.data);
       } catch (error) {
@@ -208,26 +222,29 @@ export default function Home() {
                   alt='thumbnail user'
                   height={100}
                   radius='sm'
-                  src={resultTiktok.author.avatar}
+                  src={
+                    resultTiktok.aweme_detail.author.avatar_larger.url_list[0]
+                  }
                   width={100}
                 />
                 <div className='flex flex-col'>
-                  <p className='text-md'>{resultTiktok.author.name}</p>
+                  <p className='text-md'>
+                    {resultTiktok.aweme_detail.author.nickname}
+                  </p>
                   <p className='text-small text-default-500'>
-                    {resultTiktok.title}
+                    {resultTiktok.aweme_detail.desc}
                   </p>
                 </div>
               </CardHeader>
               <Divider />
               <CardBody className='gap-y-3'>
                 <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
-                  <a href={resultTiktok.video.noWatermark}>MP4 NO WATERMARK</a>
+                  <a href={resultTiktok.hdplay}>MP4 NO WATERMARK</a>
                 </Button>
                 <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
-                  <a href={resultTiktok.video.watermark}> MP4 WITH WATERMARK</a>
-                </Button>
-                <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
-                  <a href={resultTiktok.music.play_url}> MP3 MUSIC ONLY</a>
+                  <a href={resultTiktok.aweme_detail.music.play_url.uri}>
+                    MP4A MUSIC ONLY
+                  </a>
                 </Button>
               </CardBody>
               <Divider />

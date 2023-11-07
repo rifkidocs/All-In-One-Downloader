@@ -10,8 +10,8 @@ import Footer from "./components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Tiktok Downloader",
-  description: "Website that can download Tiktok Video/Music",
+  title: "All In One Downloader",
+  description: "Website that can download various platform videos and music",
 };
 
 export default function RootLayout({

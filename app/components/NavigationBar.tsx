@@ -30,7 +30,7 @@ const NavigationBar = () => {
           className='sm:hidden'
         />
         <NavbarBrand>
-          <p className='font-bold text-inherit '>TikTok Downloader</p>
+          <p className='font-bold text-inherit '>All In One Downloader</p>
         </NavbarBrand>
       </NavbarContent>
 
