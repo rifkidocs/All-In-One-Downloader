@@ -19,20 +19,6 @@ import axios from "axios";
 
 export default function Home() {
   interface TikTokResult {
-    aweme_detail: {
-      desc: string;
-      author: {
-        nickname: string;
-        avatar_larger: {
-          url_list: string[];
-        };
-      };
-      music: {
-        play_url: {
-          uri: string;
-        };
-      };
-    };
     hdplay: string;
   }
 
@@ -217,34 +203,10 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}>
             <Card className='max-w-[400px] mx-auto mt-10'>
-              <CardHeader className='flex gap-3'>
-                <Image
-                  alt='thumbnail user'
-                  height={100}
-                  radius='sm'
-                  src={
-                    resultTiktok.aweme_detail.author.avatar_larger.url_list[0]
-                  }
-                  width={100}
-                />
-                <div className='flex flex-col'>
-                  <p className='text-md'>
-                    {resultTiktok.aweme_detail.author.nickname}
-                  </p>
-                  <p className='text-small text-default-500'>
-                    {resultTiktok.aweme_detail.desc}
-                  </p>
-                </div>
-              </CardHeader>
               <Divider />
               <CardBody className='gap-y-3'>
                 <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
                   <a href={resultTiktok.hdplay}>MP4 NO WATERMARK</a>
-                </Button>
-                <Button className='bg-gradient-to-tr from-blue-500 max-w-[200px] mx-auto to-blue-400 text-white shadow-lg'>
-                  <a href={resultTiktok.aweme_detail.music.play_url.uri}>
-                    MP4A MUSIC ONLY
-                  </a>
                 </Button>
               </CardBody>
               <Divider />
